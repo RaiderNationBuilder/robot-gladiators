@@ -13,7 +13,7 @@ var playerMoney = 10;
 // console.log(playerName, playerAttack, palyerHealth);
 
 var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
-var enemyHealth = 50;
+var enemyHealth = 10;
 var enemyAttack = 12;
 
 // console.log(enemyNames)
@@ -74,15 +74,44 @@ var fight = function(enemyName) {
     }
   };
 
-for(var i = 0; i < enemyNames.length; i++) {
-    if (playerHealth > 0) {
-        window.alert("Welcome to Robot Gladiator!  Round " + (i + 1) );
-        var pickedEnemyName = enemyNames[i];
-        enemyHealth = 50
-        fight(pickedEnemyName);
-    } else {
-        window.alert("You have lost your robot in battle! Game Over!");
-    }   
-}
+  var startGame = function() {
+    //reset player stats
+    var playerHealth = 100;
+    var playerAttack = 10;
+    var playerMoney = 10;
+    for(var i = 0; i < enemyNames.length; i++) {
+        if (playerHealth > 0) {
+            window.alert("Welcome to Robot Gladiator!  Round " + (i + 1) );
+            var pickedEnemyName = enemyNames[i];
+            enemyHealth = 10
+            fight(pickedEnemyName);
+        } else {
+            window.alert("You have lost your robot in battle! Game Over!");
+            break;
+        }  
+    }
+     endGame(); 
+};
+    //function to end the entire game
+    var endGame = function() {
+        window.alert("The game has now ended. Let's see how you did!");
+        // if the player is still alive, player wins!
+        if (playerHealth > 0){
+            window.alert("Great job, you've survived the game! You now have a score of " + playerMoney + '.');
+        }
+        else {
+            window.alert("You've lost your robot in battle.");
+        }
+    var playAgainConfirm = window.confirm("Would you like to play again?");
+        if (playAgainConfirm) {
+            //restart the game
+            startGame();
+        }else {
+         window.alert("Thanks you for playing Robot Gladiators! Come back soon!");
+        }
+    };
+    
+  
+    
 // run fight function to start game
-// fight();
+startGame();
