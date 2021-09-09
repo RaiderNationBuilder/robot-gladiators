@@ -4,22 +4,11 @@
 
 // Game States
 // "LOSE" - Player robot's health is zero or less
+// console.log(enemy.names)
+// console.log(playerInfo.length)
+var fight = function(enemy.name) {
 
-var playerName = window.prompt("What is your robot's name");
-var playerHealth = 0;
-var playerAttack = 10;
-var playerMoney = 10;
-
-// console.log(playerName, playerAttack, palyerHealth);
-
-var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
-var enemyHealth = 100;
-var enemyAttack = 120;
-
-// console.log(enemyNames)
-// console.log(enemyNames.length)
-var fight = function(enemyName) {
-    while (playerHealth > 0 && enemyHealth > 0) {
+    while (playerHealth > 0 && enemy.health > 0) {
       // ask player if they'd like to fight or run
       var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
   
@@ -30,7 +19,7 @@ var fight = function(enemyName) {
   
         // if yes (true), leave fight
         if (confirmSkip) {
-          window.alert(playerName + ' has decided to skip this fight. Goodbye!');
+          window.alert(playerInfo.name + ' has decided to skip this fight. Goodbye!');
           // subtract money from playerMoney for skipping
           playerMoney = Math.max(0, playerMoney - 10);
           console.log("playerMoney", playerMoney)
@@ -41,14 +30,14 @@ var fight = function(enemyName) {
       // generate random damage value based on player's attack power
       var damage = randomNumber(playerAttack - 3, playerAttack);
 
-      enemyHealth = Math.max(0, enemyHealth - damage);
+      enemy.health = Math.max(0, enemy.health - damage);
       console.log(
-        playerName + ' attacked ' + enemyName + '. ' + enemyName + ' now has ' + enemyHealth + ' health remaining.'
+        playerInfo.name + ' attacked ' + enemy.name + '. ' + enemy.name + ' now has ' + enemy.health + ' health remaining.'
       );
   
       // check enemy's health
-      if (enemyHealth <= 0) {
-        window.alert(enemyName + ' has died!');
+      if (enemy.health <= 0) {
+        window.alert(enemy.name + ' has died!');
   
         // award player money for winning
         playerMoney = playerMoney + 20;
@@ -56,41 +45,40 @@ var fight = function(enemyName) {
         // leave while() loop since enemy is dead
         break;
       } else {
-        window.alert(enemyName + ' still has ' + enemyHealth + ' health left.');
+        window.alert(enemy.name + ' still has ' + enemy.health + ' health left.');
       }
   
-      // remove players's health by subtracting the amount set in the enemyAttack variable
-      playerHealth = Math.max(0, playerHealth - enemyAttack);
+      var damage = randomNumber(enemy.attack - 3, enemy.attack);
+
+      playerHealth = Math.max(0, playerHealth - damage);
       console.log(
-        enemyName + ' attacked ' + playerName + '. ' + playerName + ' now has ' + playerHealth + ' health remaining.'
+        enemy.name + ' attacked ' + playerInfo.name + '. ' + playerInfo.name + ' now has ' + playerHealth + ' health remaining.'
       );
   
       // check player's health
       if (playerHealth <= 0) {
-        window.alert(playerName + ' has died!');
+        window.alert(playerInfo.name + ' has died!');
         // leave while() loop if player is dead
         break;
       } else {
-        window.alert(playerName + ' still has ' + playerHealth + ' health left.');
+        window.alert(playerInfo.name + ' still has ' + playerHealth + ' health left.');
       }
     }
   };
 
   var startGame = function() {
     //reset player stats
-    var playerHealth = 100;
-    var playerAttack = 10;
-    var playerMoney = 10;
-    for(var i = 0; i < enemyNames.length; i++) {
+    playerInfo.reset();
+    for(var i = 0; i < playerInfo.length; i++) {
         if (playerHealth > 0) {
             window.alert("Welcome to Robot Gladiator!  Round " + (i + 1) );
             debugger;
-            var pickedEnemyName = enemyNames[i];
-            enemyHealth = randomNumber(40, 60);
-            fight(pickedEnemyName);
+            var pickedEnemyObj = enemyInfo[i]
+            pickedEnemyObj.health = randomNumber(40, 60);
+            fight(pickedEnemyObj);
             
             //if were not at the last enemy in the array
-            if (playerHealth > 0 && i < enemyNames.length - 1) {
+            if (playerHealth > 0 && i < playerInfo.length - 1) {
                 // ask if player wants to use the store before next round
                 var storeConfirm = window.confirm("The fight is over, visit the store before the next round?");
 
@@ -171,7 +159,53 @@ var fight = function(enemyName) {
 
         return value;
     };
-  
+
+    var playerInfo = {
+        name: window.prompt("What is your robot's name"),
+        playerHealth = 0,
+        playerAttack = 1,
+        playerMoney = 10,
+        reset: function() {
+            this.health = 100;
+            this.money = 10;
+            this.attack = 10;
+        },
+        refillHealth: function() {
+            if (this.money >= 7) {
+              window.alert("Refilling player's health by 20 for 7 dollars.");
+              this.health += 20;
+              this.money -= 7;
+            } 
+            else {
+              window.alert("You don't have enough money!");
+            }
+          },
+          upgradeAttack: function() {
+            if (this.money >= 7) {
+              window.alert("Upgrading player's attack by 6 for 7 dollars.");
+              this.attack += 6;
+              this.money -= 7;
+            } 
+            else {
+              window.alert("You don't have enough money!");
+            }
+          }
+    };
+    // console.log(playerInfo.name, playerAttack, palyerHealth);
+    var enemyInfo = [
+        {
+            name: "Roborto", 
+            attack: randomNumber(10, 14)
+        },
+        {
+            name: "Amy Android",
+            attack: randomNumber(10, 14)
+        },
+        {
+            name:  "Robo Trumble",
+            attack: randomNumber(10, 14)
+        }
+    ];
     
 // run fight function to start game
 startGame();
